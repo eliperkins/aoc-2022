@@ -21,9 +21,15 @@ public struct Day1 {
     public let input: String
 
     public init(
-        input: String = try! Input.day(1)
+        input: String? = nil
     ) {
-        self.input = input
+        if let input {
+            self.input = input
+        } else if let input = try? Input.day(1) {
+            self.input = input
+        } else {
+            self.input = Self.sample
+        }
     }
 
     public func solvePart1() -> Int {

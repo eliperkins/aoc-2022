@@ -16,16 +16,24 @@ struct Make: AsyncParsableCommand {
 
             public let input: String
 
-            public init(input: String = try! Input.day(\(options.day))) {
-                self.input = input
+            public init(
+                input: String? = nil
+            ) {
+                if let input {
+                    self.input = input
+                } else if let input = try? Input.day(\(options.day)) {
+                    self.input = input
+                } else {
+                    self.input = Self.sample
+                }
             }
 
             public func solvePart1() -> Int {
-                return 0
+                0
             }
 
             public func solvePart2() -> Int {
-                return 0
+                0
             }
         }
         """
