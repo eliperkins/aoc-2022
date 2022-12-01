@@ -3,7 +3,7 @@
 import PackageDescription
 
 var products: [Product] = [
-    .library(name: "AdventOfCode2022", targets: ["AdventOfCode2022"]),
+    .library(name: "AdventOfCode2022", targets: ["AdventOfCode2022"])
 ]
 var targets: [Target] = [
     .target(
@@ -28,14 +28,15 @@ var dependencies: [Package.Dependency] = [
     .package(url: "https://github.com/apple/swift-numerics", from: "1.0.2"),
 ]
 #if os(macOS)
-products.append(.executable(name: "aoc-cli", targets: ["AdventOfCodeCLI"]))
-targets.append(.executableTarget(
-    name: "AdventOfCodeCLI",
-    dependencies: [
-        .product(name: "ArgumentParser", package: "swift-argument-parser")
-    ]
-))
-dependencies.append(.package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0"))
+    products.append(.executable(name: "aoc-cli", targets: ["AdventOfCodeCLI"]))
+    targets.append(
+        .executableTarget(
+            name: "AdventOfCodeCLI",
+            dependencies: [
+                .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ]
+        ))
+    dependencies.append(.package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0"))
 #endif
 
 let package = Package(

@@ -30,7 +30,7 @@ public struct Day1 {
         input.lines
             .chunked(by: { _, str in !str.isEmpty })
             .map { $0.compactMap(Int.init).reduce(0, +) }
-            .max()!
+            .max() ?? 0
     }
 
     public func solvePart2() -> Int {
