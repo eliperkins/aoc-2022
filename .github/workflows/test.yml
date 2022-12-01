@@ -15,7 +15,7 @@ jobs:
       - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_14.1.app
       - name: Build
-        run: swift build -v -c release
+        run: swift build -v -c release --build-tests
       - name: Run tests
         run: swift test -v -c release --skip-build
   ubuntu:
