@@ -11,7 +11,7 @@ struct Test: AsyncParsableCommand {
     func run() async throws {
         let task = Process()
         task.launchPath = "/usr/bin/env"
-        task.arguments = ["swift", "test", "--filter", "Day\(options.day)"]
+        task.arguments = ["swift", "test", "-c", "release", "--filter", "AdventOfCode2022Tests.Day\(options.day)"]
         try task.run()
         task.waitUntilExit()
 
