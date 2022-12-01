@@ -21,12 +21,10 @@ jobs:
   ubuntu:
     name: Ubuntu
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        action:
-          - build -c release
-          - test -c release
+    container: swift:5.7.1
     steps:
       - uses: actions/checkout@v3
-      - name: Action
-        run: Scripts/ubuntu.sh ${{ matrix.action }}
+      - name: Build
+        run: swift build -v -c release --build-tests
+      - name: Run tests
+        run: swift test -v -c release --skip-build
