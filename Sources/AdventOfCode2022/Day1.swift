@@ -33,15 +33,13 @@ public struct Day1 {
     }
 
     public func solvePart1() -> Int {
-        input.lines
-            .chunked(by: { _, str in !str.isEmpty })
+        input.paragraphs
             .map { $0.compactMap(Int.init).reduce(0, +) }
             .max() ?? 0
     }
 
     public func solvePart2() -> Int {
-        input.lines
-            .chunked(by: { _, str in !str.isEmpty })
+        input.paragraphs
             .map { $0.compactMap(Int.init).reduce(0, +) }
             .max(count: 3)
             .reduce(0, +)
