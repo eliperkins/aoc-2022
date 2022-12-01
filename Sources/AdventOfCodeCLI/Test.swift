@@ -12,7 +12,7 @@ struct Test: AsyncParsableCommand {
         let task = Process()
         task.launchPath = "/usr/bin/env"
         task.arguments = ["swift", "test", "--filter", "Day\(options.day)"]
-        task.launch()
+        try task.run()
         task.waitUntilExit()
 
         if task.terminationStatus == 0 {
