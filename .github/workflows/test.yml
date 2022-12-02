@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: swift build -v -c release --build-tests
       - name: Run tests
-        run: swift test -v -c release --skip-build
+        run: swift test -c release --skip-build
   ubuntu:
     name: Ubuntu
     runs-on: ubuntu-latest
@@ -41,4 +41,4 @@ jobs:
       - name: Build
         run: swift build -v -c release --build-tests
       - name: Run tests
-        run: swift test -v -c release --skip-build
+        run: swift test -c release --skip-build
