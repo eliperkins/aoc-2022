@@ -1,4 +1,6 @@
 import AdventOfCodeKit
+import Parsing
+
 private protocol Scorable {
     var scoreValue: Int { get }
 }
@@ -104,33 +106,42 @@ public struct Day2 {
         }
     }
 
-        input.lines
-            .compactMap { line -> Matchup? in
-                let xs = line.split(separator: " ").map(String.init)
-                guard let opponentMove = xs.first.flatMap(OpponentMove.init),
-                    let playerMove = xs.last.flatMap(PlayerMove.init)
-                else {
-                    return nil
-                }
-                return Matchup(opponentMove: opponentMove, playerMove: playerMove)
     public func solvePart1() throws -> Int {
+        let parser = Many {
+            Parse(Matchup.init) {
+                Prefix { $0.isLetter }.map(String.init).compactMap(OpponentMove.init)
+                " "
+                Prefix { $0.isLetter }.map(String.init).compactMap(PlayerMove.init)
             }
+        } separator: {
+            "\n"
+        } terminator: {
+            End()
+        }
+
+        return try parser.parse(input)
             .map(\.scoreValue)
             .reduce(0, +)
     }
 
-        input.lines
-            .compactMap { line -> Matchup? in
-                let xs = line.split(separator: " ").map(String.init)
-                guard let opponentMove = xs.first.flatMap(OpponentMove.init),
-                    let outcome = xs.last.flatMap(Outcome.init)
-                else {
-                    return nil
-                }
     public func solvePart2() throws -> Int {
+        let parser = Many {
+            Parse {
+                Prefix { $0.isLetter }.map(String.init).compactMap(OpponentMove.init)
+                " "
+                Prefix { $0.isLetter }.map(String.init).compactMap(Outcome.init)
+            }
+            .map { opponentMove, outcome -> Matchup in
                 let playerMove = opponentMove.playerMove(for: outcome)
                 return Matchup(opponentMove: opponentMove, playerMove: playerMove)
             }
+        } separator: {
+            "\n"
+        } terminator: {
+            End()
+        }
+
+        return try parser.parse(input)
             .map(\.scoreValue)
             .reduce(0, +)
     }
