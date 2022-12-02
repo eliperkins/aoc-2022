@@ -1,5 +1,5 @@
 import AdventOfCodeKit
-import Algorithms
+import Parsing
 
 public struct Day1 {
     public static let sample = """
@@ -33,16 +33,26 @@ public struct Day1 {
         }
     }
 
+    let parser = Many {
+        Many {
+            Int.parser()
+        } separator: {
+            "\n"
+        }
+    } separator: {
+        "\n"
+    }
+
     public func solvePart1() throws -> Int {
-        input.paragraphs
-            .map { $0.compactMap(Int.init).reduce(0, +) }
+        try parser.parse(input)
+            .map { $0.sum() }
             .max() ?? 0
     }
 
     public func solvePart2() throws -> Int {
-        input.paragraphs
-            .map { $0.compactMap(Int.init).reduce(0, +) }
+        try parser.parse(input)
+            .map { $0.sum() }
             .max(count: 3)
-            .reduce(0, +)
+            .sum()
     }
 }
