@@ -121,7 +121,7 @@ public struct Day2 {
 
         return try parser.parse(input)
             .map(\.scoreValue)
-            .reduce(0, +)
+            .sum()
     }
 
     public func solvePart2() throws -> Int {
@@ -143,6 +143,6 @@ public struct Day2 {
 
         return try parser.parse(input)
             .map(\.scoreValue)
-            .reduce(0, +)
+            .sum()
     }
 }
