@@ -33,13 +33,13 @@ public struct Day1 {
         }
     }
 
-    public func solvePart1() -> Int {
+    public func solvePart1() throws -> Int {
         input.paragraphs
             .map { $0.compactMap(Int.init).reduce(0, +) }
             .max() ?? 0
     }
 
-    public func solvePart2() -> Int {
+    public func solvePart2() throws -> Int {
         input.paragraphs
             .map { $0.compactMap(Int.init).reduce(0, +) }
             .max(count: 3)

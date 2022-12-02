@@ -104,7 +104,6 @@ public struct Day2 {
         }
     }
 
-    public func solvePart1() -> Int {
         input.lines
             .compactMap { line -> Matchup? in
                 let xs = line.split(separator: " ").map(String.init)
@@ -114,12 +113,12 @@ public struct Day2 {
                     return nil
                 }
                 return Matchup(opponentMove: opponentMove, playerMove: playerMove)
+    public func solvePart1() throws -> Int {
             }
             .map(\.scoreValue)
             .reduce(0, +)
     }
 
-    public func solvePart2() -> Int {
         input.lines
             .compactMap { line -> Matchup? in
                 let xs = line.split(separator: " ").map(String.init)
@@ -128,6 +127,7 @@ public struct Day2 {
                 else {
                     return nil
                 }
+    public func solvePart2() throws -> Int {
                 let playerMove = opponentMove.playerMove(for: outcome)
                 return Matchup(opponentMove: opponentMove, playerMove: playerMove)
             }

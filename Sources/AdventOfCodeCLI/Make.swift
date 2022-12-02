@@ -28,11 +28,11 @@ struct Make: AsyncParsableCommand {
                 }
             }
 
-            public func solvePart1() -> Int {
+            public func solvePart1() throws -> Int {
                 0
             }
 
-            public func solvePart2() -> Int {
+            public func solvePart2() throws -> Int {
                 0
             }
         }
@@ -45,20 +45,20 @@ struct Make: AsyncParsableCommand {
         import XCTest
 
         final class Day\(options.day)Tests: XCTestCase {
-            func test_part1_test() {
-                XCTAssertEqual(Day\(options.day)(input: Day\(options.day).sample).solvePart1(), 1)
+            func test_part1_test() throws {
+                XCTAssertEqual(try Day\(options.day)(input: Day\(options.day).sample).solvePart1(), 1)
             }
 
-            func test_part1_solution() {
-                XCTAssertEqual(Day\(options.day)().solvePart1(), 1)
+            func test_part1_solution() throws {
+                XCTAssertEqual(try Day\(options.day)().solvePart1(), 1)
             }
 
-            func test_part2_test() {
-                XCTAssertEqual(Day\(options.day)(input: Day\(options.day).sample).solvePart2(), 1)
+            func test_part2_test() throws {
+                XCTAssertEqual(try Day\(options.day)(input: Day\(options.day).sample).solvePart2(), 1)
             }
 
-            func test_part2_solution() {
-                XCTAssertEqual(Day\(options.day)().solvePart2(), 1)
+            func test_part2_solution() throws {
+                XCTAssertEqual(try Day\(options.day)().solvePart2(), 1)
             }
         }
         """
