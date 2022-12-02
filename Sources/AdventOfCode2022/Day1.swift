@@ -1,3 +1,4 @@
+import AdventOfCodeKit
 import Algorithms
 
 public struct Day1 {

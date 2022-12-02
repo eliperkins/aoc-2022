@@ -3,7 +3,8 @@
 import PackageDescription
 
 var products: [Product] = [
-    .library(name: "AdventOfCode2022", targets: ["AdventOfCode2022"])
+    .library(name: "AdventOfCode2022", targets: ["AdventOfCode2022"]),
+    .library(name: "AdventOfCodeKit", targets: ["AdventOfCodeKit"]),
 ]
 var targets: [Target] = [
     .target(
@@ -12,9 +13,16 @@ var targets: [Target] = [
             .product(name: "Algorithms", package: "swift-algorithms"),
             .product(name: "Collections", package: "swift-collections"),
             .product(name: "Numerics", package: "swift-numerics"),
+            .target(name: "AdventOfCodeKit"),
         ],
         resources: [
             .copy("Inputs")
+        ]
+    ),
+    .target(
+        name: "AdventOfCodeKit",
+        dependencies: [
+            .product(name: "Algorithms", package: "swift-algorithms")
         ]
     ),
     .testTarget(

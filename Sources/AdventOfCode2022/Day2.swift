@@ -1,3 +1,4 @@
+import AdventOfCodeKit
 private protocol Scorable {
     var scoreValue: Int { get }
 }
