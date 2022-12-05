@@ -1,7 +1,6 @@
 import AdventOfCodeKit
 import Algorithms
 import Foundation
-import Parsing
 
 public struct Day3 {
     public static let sample = """
