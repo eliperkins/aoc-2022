@@ -1,8 +1,9 @@
 import AdventOfCodeKit
 import Foundation
+#if canImport(RegexBuilder)
 import RegexBuilder
+#endif
 
-@available(macOS 13.0, *)
 public struct Day5 {
     public static let sample = """
             [D]
@@ -30,25 +31,51 @@ public struct Day5 {
         }
     }
 
-    let moveRegex = Regex {
-        "move "
-        Capture {
-            OneOrMore(.digit)
-        }
-        " from "
-        Capture {
-            OneOrMore(.digit)
-        }
-        " to "
-        Capture {
-            OneOrMore(.digit)
-        }
-    }
     final class Ship {
         struct Move {
             let count: Int
             let source: Int
             let destination: Int
+
+            @available(macOS 13.0, *)
+            static let moveRegex = Regex {
+                "move "
+                Capture {
+                    OneOrMore(.digit)
+                }
+                " from "
+                Capture {
+                    OneOrMore(.digit)
+                }
+                " to "
+                Capture {
+                    OneOrMore(.digit)
+                }
+            }
+
+            init(count: Int, source: Int, destination: Int) {
+                self.count = count
+                self.source = source
+                self.destination = destination
+            }
+
+            init?(_ line: String) throws {
+                if #available(macOS 13.0, *) {
+                    guard let match = try Self.moveRegex.firstMatch(in: line),
+                        let count = Int(match.1),
+                        let source = Int(match.2),
+                        let destination = Int(match.3)
+                    else { return nil }
+                    self.init(count: count, source: source, destination: destination)
+                } else {
+                    let parts = line.split(separator: " ")
+                        .compactMap { Int(String($0)) }
+                    if parts.count != 3 {
+                        return nil
+                    }
+                    self.init(count: parts[0], source: parts[1], destination: parts[2])
+                }
+            }
         }
 
         private var storage = [Int: [String]]()
@@ -124,14 +151,7 @@ public struct Day5 {
             return array
         }
 
-        let moves = try moveStrings.compactMap { moveString -> Ship.Move? in
-            guard let match = try moveRegex.firstMatch(in: moveString),
-                let count = Int(match.1),
-                let source = Int(match.2),
-                let destination = Int(match.3)
-            else { return nil }
-            return Ship.Move(count: count, source: source, destination: destination)
-        }
+        let moves = try moveStrings.compactMap(Ship.Move.init)
 
         return (Ship(size: width, boxes: boxes), moves)
     }
