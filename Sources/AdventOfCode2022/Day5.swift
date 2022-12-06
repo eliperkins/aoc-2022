@@ -1,7 +1,8 @@
 import AdventOfCodeKit
 import Foundation
+
 #if canImport(RegexBuilder)
-import RegexBuilder
+    import RegexBuilder
 #endif
 
 public struct Day5 {
@@ -53,13 +54,17 @@ public struct Day5 {
                 }
             }
 
-            init(count: Int, source: Int, destination: Int) {
+            init(
+                count: Int, source: Int, destination: Int
+            ) {
                 self.count = count
                 self.source = source
                 self.destination = destination
             }
 
-            init?(_ line: String) throws {
+            init?(
+                _ line: String
+            ) throws {
                 if #available(macOS 13.0, *) {
                     guard let match = try Self.moveRegex.firstMatch(in: line),
                         let count = Int(match.1),
