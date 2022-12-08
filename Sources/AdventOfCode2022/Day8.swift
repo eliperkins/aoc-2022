@@ -1,5 +1,4 @@
 import AdventOfCodeKit
-import Algorithms
 import Foundation
 
 public struct Day8 {
