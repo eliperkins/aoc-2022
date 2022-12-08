@@ -1,11 +1,11 @@
 public struct Matrix<T> {
-    private(set) var storage: [[T]]
-    private let _columns: [[T]]
+    private(set) var _rows: [[T]]
+    private(set) var _columns: [[T]]
 
     public init(
         _ xs: [[T]]
     ) {
-        storage = xs
+        _rows = xs
         let columns = xs[0].indices.map { index in
             xs.map { $0[index] }
         }
@@ -13,7 +13,7 @@ public struct Matrix<T> {
     }
 
     public var rows: [[T]] {
-        storage
+        _rows
     }
 
     public var columns: [[T]] {
@@ -21,8 +21,8 @@ public struct Matrix<T> {
     }
 
     public func atPosition(x: Int, y: Int) -> T? {
-        if storage.indices.contains(y) {
-            let row = storage[y]
+        if rows.indices.contains(y) {
+            let row = rows[y]
             if row.indices.contains(x) {
                 return row[x]
             }
@@ -31,11 +31,12 @@ public struct Matrix<T> {
         return nil
     }
 
-    mutating func set(value: T, x: Int, y: Int) {
-        if storage.indices.contains(y) {
-            let row = storage[y]
+    public mutating func set(value: T, x: Int, y: Int) {
+        if rows.indices.contains(y) {
+            let row = rows[y]
             if row.indices.contains(x) {
-                storage[y][x] = value
+                _rows[y][x] = value
+                _columns[x][y] = value
             }
         }
     }
