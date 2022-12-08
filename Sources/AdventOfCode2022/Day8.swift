@@ -102,9 +102,9 @@ public struct Day8 {
             }
 
             let up = count(trees: matrix.columns[position.x][0...position.y].reversed())
-            let down = count(trees: Array(matrix.columns[position.x][position.y...matrix.columns.endIndex - 1]))
+            let down = count(trees: Array(matrix.columns[position.x][position.y...]))
             let left = count(trees: matrix.rows[position.y][0...position.x].reversed())
-            let right = count(trees: Array(matrix.rows[position.y][position.x...matrix.rows.endIndex - 1]))
+            let right = count(trees: Array(matrix.rows[position.y][position.x...]))
             return [up, down, left, right].reduce(1, *)
         }
 
