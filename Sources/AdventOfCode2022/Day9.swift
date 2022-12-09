@@ -39,7 +39,7 @@ public struct Day9 {
         }
     }
 
-    struct Move {
+    struct Motion {
         enum Direction: String {
             case up = "U"
             case down = "D"
@@ -52,13 +52,28 @@ public struct Day9 {
     }
 
     let parser = Many {
-        Parse(Move.init) {
-            Prefix(1).map(String.init).compactMap(Move.Direction.init)
+        Parse(Motion.init) {
+            Prefix(1).map(String.init).compactMap(Motion.Direction.init)
             Whitespace(1)
             Int.parser()
         }
     } separator: {
         "\n"
+    }
+
+    func move(head: Point, in direction: Motion.Direction) -> Point {
+        var head = head
+        switch direction {
+        case .up:
+            head.y += 1
+        case .right:
+            head.x += 1
+        case .left:
+            head.x -= 1
+        case .down:
+            head.y -= 1
+        }
+        return head
     }
 
     func update(head: Point, tail: Point) -> Point {
@@ -85,24 +100,15 @@ public struct Day9 {
     }
 
     public func solvePart1() throws -> Int {
-        let moves = try parser.parse(input)
+        let motions = try parser.parse(input)
 
         var head = Point(x: 0, y: 0)
         var tail = Point(x: 0, y: 0)
         var visited = Set<Point>([tail])
 
-        for move in moves {
-            for _ in (1...move.steps) {
-                switch move.direction {
-                case .up:
-                    head.y += 1
-                case .right:
-                    head.x += 1
-                case .left:
-                    head.x -= 1
-                case .down:
-                    head.y -= 1
-                }
+        for motion in motions {
+            for _ in (1...motion.steps) {
+                head = move(head: head, in: motion.direction)
                 tail = update(head: head, tail: tail)
                 visited.insert(tail)
             }
@@ -112,26 +118,16 @@ public struct Day9 {
     }
 
     public func solvePart2() throws -> Int {
-        let moves = try parser.parse(input)
+        let motions = try parser.parse(input)
 
         let keys = ["H", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
         var points = Dictionary(uniqueKeysWithValues: zip(keys, Array(repeating: Point(x: 0, y: 0), count: keys.count)))
         var visited = Set<Point>([Point(x: 0, y: 0)])
 
-        for move in moves {
-            for _ in (1...move.steps) {
-                var head = points["H", default: Point(x: 0, y: 0)]
-                switch move.direction {
-                case .up:
-                    head.y += 1
-                case .right:
-                    head.x += 1
-                case .left:
-                    head.x -= 1
-                case .down:
-                    head.y -= 1
-                }
-                points["H"] = head
+        for motion in motions {
+            for _ in (1...motion.steps) {
+                let head = points["H", default: Point(x: 0, y: 0)]
+                points["H"] = move(head: head, in: motion.direction)
 
                 keys.windows(ofCount: 2).forEach {
                     guard let headKey = $0.first, let tailKey = $0.last,
