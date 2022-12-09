@@ -33,9 +33,9 @@ var targets: [Target] = [
 ]
 var dependencies: [Package.Dependency] = [
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
-    .package(url: "https://github.com/apple/swift-collections", from: "1.0.3"),
+    .package(url: "https://github.com/apple/swift-collections", from: "1.0.4"),
     .package(url: "https://github.com/apple/swift-numerics", from: "1.0.2"),
-    .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.10.0"),
+    .package(url: "https://github.com/pointfreeco/swift-parsing", from: "0.11.0"),
 ]
 #if os(macOS)
     products.append(.executable(name: "aoc-cli", targets: ["AdventOfCodeCLI"]))
