@@ -1,5 +1,5 @@
 // swiftlint:disable identifier_name
-public struct Matrix<T> {
+public struct Matrix<T>: CustomDebugStringConvertible {
     private(set) var _rows: [[T]]
     private(set) var _columns: [[T]]
 
@@ -11,6 +11,14 @@ public struct Matrix<T> {
             xs.map { $0[index] }
         }
         self._columns = columns
+    }
+
+    public init(
+        repeating: T,
+        width: Int,
+        height: Int
+    ) {
+        self.init([[T]](repeating: [T](repeating: repeating, count: width), count: height))
     }
 
     public var rows: [[T]] {
@@ -84,3 +92,30 @@ public struct Matrix<T> {
         return output
     }
 }
+
+extension Matrix {
+    public var debugDescription: String {
+        rows.debugDescription
+    }
+}
+
+extension Matrix where T == String {
+    public var debugDescription: String {
+        rows.map { $0.joined() }.joined(separator: "\n")
+    }
+}
+
+extension Matrix where T == Character {
+    init(
+        string: String
+    ) throws {
+        self.init(string.lines.map(Array.init))
+    }
+
+    public var debugDescription: String {
+        rows.map { String($0) }.joined(separator: "\n")
+    }
+}
+
+extension Matrix: Equatable where T: Equatable {}
+extension Matrix: Hashable where T: Hashable {}
