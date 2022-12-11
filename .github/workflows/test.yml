@@ -22,7 +22,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-spm-
       - name: Build
-        run: swift build -v -c release --build-tests
+        run: swift build -c release --build-tests
       - name: Run tests
         run: swift test -c release --skip-build
   ubuntu:
@@ -39,6 +39,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-spm-
       - name: Build
-        run: swift build -v -c release --build-tests
+        run: swift build -c release --build-tests
       - name: Run tests
         run: swift test -c release --skip-build
