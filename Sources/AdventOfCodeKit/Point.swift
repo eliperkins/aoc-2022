@@ -16,7 +16,7 @@ public struct Point: Hashable {
         self.y = coordinates.1
     }
 
-    public var adjecent: Set<Point> {
+    public var adjacent: Set<Point> {
         [
             Point(x: x + 1, y: y),
             Point(x: x + 1, y: y + 1),

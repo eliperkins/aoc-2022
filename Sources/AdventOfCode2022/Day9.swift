@@ -78,7 +78,7 @@ public struct Day9 {
 
     func update(head: Point, tail: Point) -> Point {
         var tail = tail
-        if !head.adjecent.union([head]).contains(tail) {
+        if !head.adjacent.union([head]).contains(tail) {
             let xDiff = head.x - tail.x
             let yDiff = head.y - tail.y
             if xDiff != 0 {
