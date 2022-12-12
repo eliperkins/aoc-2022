@@ -28,4 +28,13 @@ public struct Point: Hashable {
             Point(x: x, y: y - 1),
         ]
     }
+
+    public var cardinalAdjacent: Set<Point> {
+        [
+            Point(x: x + 1, y: y),
+            Point(x: x - 1, y: y),
+            Point(x: x, y: y + 1),
+            Point(x: x, y: y - 1),
+        ]
+    }
 }

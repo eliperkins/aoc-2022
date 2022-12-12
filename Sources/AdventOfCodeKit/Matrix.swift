@@ -91,6 +91,24 @@ public struct Matrix<T>: CustomDebugStringConvertible {
         }
         return output
     }
+
+    public func first(where fn: (T) -> Bool) -> T? {
+        for row in rows {
+            for item in row where fn(item) {
+                return item
+            }
+        }
+        return nil
+    }
+
+    public func firstPosition(where fn: (T) -> Bool) -> (x: Int, y: Int)? {
+        for (y, row) in rows.enumerated() {
+            for (x, item) in row.enumerated() where fn(item) {
+                return (x: x, y: y)
+            }
+        }
+        return nil
+    }
 }
 
 extension Matrix {
