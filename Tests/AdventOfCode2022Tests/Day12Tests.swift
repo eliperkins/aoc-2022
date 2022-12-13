@@ -1,3 +1,4 @@
+#if canImport(GameKit)
 import AdventOfCode2022
 import XCTest
 
@@ -18,3 +19,4 @@ final class Day12Tests: XCTestCase {
         XCTAssertEqual(try Day12().solvePart2(), 332)
     }
 }
+#endif
