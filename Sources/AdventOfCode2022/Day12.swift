@@ -1,9 +1,7 @@
-import AdventOfCodeKit
 #if canImport(GameKit)
+import AdventOfCodeKit
 import GameKit
-#endif
 
-@available(macOS 11, *)
 public struct Day12 {
     public static let sample = """
         Sabqponm
@@ -122,3 +120,4 @@ public struct Day12 {
             .min() ?? 0
     }
 }
+#endif
