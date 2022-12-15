@@ -128,8 +128,7 @@ public struct Day15 {
                 .map(\.x)
         )
 
-        return coveredRanges.reduce(0) { acc, next in acc + next.count }
-            - objectLocations.count
+        return coveredRanges.map(\.count).sum() - objectLocations.count
     }
 
     public func solvePart2(searchSpace: Int) throws -> Int {
