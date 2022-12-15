@@ -146,4 +146,89 @@ public struct Day15 {
         }
         return 0
     }
+
+    public func solvePart2Concurrent(searchSpace: Int) throws -> Int {
+        let sensors = try SensorParser().parse(input)
+        let searchRange = 0...searchSpace
+        return searchRange
+            .lazy
+            .concurrentMap2 { y in
+                (y, findCoveredRanges(in: y, sensors: sensors))
+            }
+            .first { (_, ranges) in
+                ranges.count > 1
+            }
+            .flatMap { y, ranges in
+                guard let first = ranges.first else { return 0 }
+                // assumes gaps is always size 1, immediately after first range
+                let x = first.upperBound + 1
+                return x * 4_000_000 + y
+            } ?? 0
+    }
+
+    public func solvePart2AsyncAwait(searchSpace: Int) async throws -> Int {
+        let sensors = try SensorParser().parse(input)
+
+        struct ScanResult: Sendable {
+            let row: Int
+            let ranges: [ClosedRange<Int>]
+        }
+
+        let result = await withTaskGroup(of: [ScanResult].self, returning: Optional<ScanResult>.self) { group in
+            for chunk in (0...searchSpace).chunks(ofCount: 4096) {
+                group.addTask {
+                    chunk.map { y in
+                        let ranges = findCoveredRanges(in: y, sensors: sensors)
+                        return ScanResult(row: y, ranges: ranges)
+                    }
+                }
+            }
+
+            for await chunk in group {
+                // more than one range means we have a gap where a beacon could be
+                if let result = chunk.first(where: { result in result.ranges.count > 1 }) {
+                    group.cancelAll()
+                    return result
+                }
+            }
+
+            return nil
+        }
+
+        guard let result = result, let first = result.ranges.first else { return 0 }
+
+        // assumes gaps is always size 1, immediately after first range
+        let x = first.upperBound + 1
+        return x * 4_000_000 + result.row
+    }
 }
+
+import Dispatch
+extension RandomAccessCollection {
+    /// Returns `self.map(transform)`, computed in parallel.
+    ///
+    /// - Requires: `transform` is safe to call from multiple threads.
+    func concurrentMap2<B>(minBatchSize: Int = 4096, _ transform: (Element) -> B) -> [B] {
+        precondition(minBatchSize >= 1)
+        let n = self.count
+        let batchCount = (n + minBatchSize - 1) / minBatchSize
+        if batchCount < 2 { return self.map(transform) }
+
+        return Array(unsafeUninitializedCapacity: n) {
+            uninitializedMemory, resultCount in
+            resultCount = n
+            let baseAddress = uninitializedMemory.baseAddress!
+
+            DispatchQueue.concurrentPerform(iterations: batchCount) { b in
+                let startOffset = b * n / batchCount
+                let endOffset = (b + 1) * n / batchCount
+                var sourceIndex = index(self.startIndex, offsetBy: startOffset)
+                for p in baseAddress+startOffset..<baseAddress+endOffset {
+                    p.initialize(to: transform(self[sourceIndex]))
+                    formIndex(after: &sourceIndex)
+                }
+            }
+        }
+    }
+}
+
