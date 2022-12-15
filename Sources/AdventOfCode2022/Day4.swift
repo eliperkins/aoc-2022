@@ -67,16 +67,3 @@ public struct Day4 {
         }
     }
 }
-
-extension ClosedRange where Bound: SignedInteger, Bound.Stride: SignedInteger {
-    func fullyContains(_ range: ClosedRange<Bound>) -> Bool {
-        self.lowerBound <= range.lowerBound && self.upperBound >= range.upperBound
-    }
-
-    func overlaps(_ range: ClosedRange<Bound>) -> Bool {
-        contains(range.upperBound)
-            || contains(range.lowerBound)
-            || range.contains(self.upperBound)
-            || range.contains(self.lowerBound)
-    }
-}
