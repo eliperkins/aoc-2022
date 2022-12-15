@@ -134,16 +134,14 @@ public struct Day15 {
 
     public func solvePart2(searchSpace: Int) throws -> Int {
         let sensors = try SensorParser().parse(input)
-        for row in 0...searchSpace {
-            let coveredRanges = findCoveredRanges(in: row, sensors: sensors)
+        for y in 0...searchSpace {
+            let coveredRanges = findCoveredRanges(in: y, sensors: sensors)
+            // more than one range means we have a gap where a beacon could be
             if coveredRanges.count > 1 {
-                guard let first = coveredRanges.first, let last = coveredRanges.last else { continue }
-                for x in first.upperBound...last.lowerBound {
-                    if coveredRanges.contains(where: { range in range.contains(x) }) {
-                        continue
-                    }
-                    return x * 4_000_000 + row
-                }
+                guard let first = coveredRanges.first else { continue }
+                // assumes gaps is always size 1, immediately after first range
+                let x = first.upperBound + 1
+                return x * 4_000_000 + y
             }
         }
         return 0
